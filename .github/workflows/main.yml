@@ -14,25 +14,12 @@ permissions:
   # Need `contents: read` to checkout the repository, and run files in it
   contents: read
 
-services:
-  rabbitmq:
-    image: rabbitmq:3.8-management-alpine
-    env:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-    ports:
-      - 5672:5672
-      - 15672:15672
-
 jobs:
   pyest-job:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
       - uses: actions/checkout@v3
-
-      - name: Start rabbit mq container
-        run: docker-compose up -d rabbitmq   
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
@@ -46,5 +33,3 @@ jobs:
       - name: Run pytest
         run: | 
           pytest 
-      - name: Stop RabbitMq
-        run: docker-compose down
